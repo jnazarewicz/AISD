@@ -1,0 +1,74 @@
+Dokumentacja Projektu: Kompresor Huffmana 
+1. Opis Projektu 
+
+Program służy do bezstratnej kompresji i dekompresji plików tekstowych przy użyciu algorytmu Huffmana. Aplikacja wykorzystuje optymalne kodowanie prefiksowe, przypisując krótsze kody bitowe znakom o wyższej częstotliwości występowania. 
+
+Główne cechy: 
+
+Własna implementacja kolejki priorytetowej opartej na strukturze kopca binarnego (Min-Heap). 
+Mapowanie znaków specjalnych: Białe znaki (spacja, nowa linia) są zapisywane w słowniku w sposób czytelny dla człowieka (np. SPC, \n). 
+Interfejs konsolowy: Prosta obsługa poprzez menu wyboru. 
+
+2. Instrukcja Użytkownika 
+
+Kompilacja 
+Do skompilowania programu wymagany jest kompilator C++ wspierający standard C++11 lub nowszy (np. GCC/G++). 
+Bash 
+g++ -o huffman huffman.cpp 
+ 
+Uruchomienie 
+Bash 
+./huffman 
+ 
+
+Obsługa Menu 
+Opcja 1 (Demo Kolejki): Prezentuje działanie własnej struktury danych (dodawanie elementów i automatyczne sortowanie według priorytetu). 
+Opcja 2 (Kompresja): 
+Podaj nazwę pliku źródłowego (np. dane.txt). 
+Podaj nazwę pliku wynikowego (np. skomprymowany.huf). 
+Opcja 3 (Dekompresja): 
+Podaj nazwę pliku z rozszerzeniem .huf. 
+Podaj nazwę pliku, do którego ma zostać przywrócona treść. 
+
+
+3. Specyfikacja Techniczna 
+
+Struktura Kolejki Priorytetowej 
+Zaimplementowana klasa MyPriorityQueue zarządza dynamiczną tablicą wskaźników do węzłów drzewa (Node*). 
+Złożoność wstawiania: $O(\log n)$ 
+Złożoność usunięcia minimum: $O(\log n)$ 
+Złożoność budowy (heapify): $O(n)$ 
+Format Pliku Wynikowego (.huf) 
+Plik składa się z dwóch sekcji: 
+
+Słownik (Pierwsza linia): Pary ZNAK:KOD oddzielone spacją. 
+
+\n – nowa linia 
+\r – powrót karetki 
+SPC – spacja 
+COL - dwukropek
+
+Dane (Druga linia): Ciąg znaków '0' i '1' reprezentujący zakodowaną treść. 
+
+Przebieg Algorytmu 
+
+Zliczanie częstotliwości: Program analizuje plik wejściowy i zlicza wystąpienia każdego znaku. 
+Budowa drzewa: Węzły są łączone parami (najmniejsze z najmniejszymi) w strukturę drzewiastą. 
+Generowanie kodów: Przejście drzewa metodą rekurencyjną przypisuje bity do znaków (lewo = 0, prawo = 1). 
+Dekompresja: Program odczytuje słownik, a następnie bit po bicie przechodzi przez mapę kodów, aż odnajdzie pasujący znak. 
+ 
+4. Przykładowe Działanie 
+
+Plik wejściowy (test.txt): 
+Plaintext 
+
+ala ma kota 
+Plik skompresowany (test.huf): 
+Plaintext 
+
+SPC:101 a:0 k:111 l:100 m:1101 o:1100 t:1110 
+0100010111010101111110011100 
+ 
+5. Uwagi do Projektu 
+Program działa w trybie binarnym, co zapewnia poprawną pracę na różnych systemach operacyjnych (Windows/Linux) mimo różnic w kodowaniu znaków końca linii. 
+Zastosowano własne algorytmy zarządzania kopcem, rezygnując z gotowych kontenerów biblioteki standardowej (z wyjątkiem std::vector jako bazy pod kopiec oraz std::map do przechowywania słownika). 
